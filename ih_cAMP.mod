@@ -10,7 +10,7 @@ Axonal Ih-currents as described in Byczkowicz et al. (2019)
 ENDCOMMENT
 
 NEURON {
-	SUFFIX ih
+	SUFFIX ih_cAMP
  	USEION k READ ek WRITE ik
 	USEION na READ ena WRITE ina
 	RANGE ghdbar
@@ -26,8 +26,8 @@ UNITS {
 
 PARAMETER {
 	v (mV)
-	k_na_ratio = 0.5  			(mV) 				       
-	ghdbar	 		(S/cm2)	 
+	k_na_ratio = 0.5  			(mV) 					       
+	ghdbar	 		(S/cm2)	
 }
 
 STATE {
@@ -52,11 +52,11 @@ BREAKPOINT {
 }
 
 FUNCTION alpha(v(mV)) {
-	alpha = 0.001*6.907805613*exp(-(v+102.12240358)/18.7137579766)			: (1/ms) parameters are estimated by direct fitting of HH model to activation time constants and voltage actication curve recorded at 37C
+	alpha = 0.001*7.5700403*exp(-(v+87.3143662)/31.463876646)			: (1/ms) parameters are estimated by direct fitting of HH model to activation time constants and voltage actication curve recorded at 37C
 }
 
 FUNCTION beta(v(mV)) {
-	beta = 0.001*6.907805613*exp((v+102.12240358)/21.7297609)			
+	beta = 0.001*7.5700403*exp((v+87.3143662)/10.84065548)			
 }
 
 DERIVATIVE state {

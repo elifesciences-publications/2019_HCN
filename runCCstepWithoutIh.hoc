@@ -1,0 +1,49 @@
+xopen("Cell parameters BUILD axon.hoc")
+xopen("Cell parameters DEFINE densities.hoc")
+xopen("Cell parameters ADD nax Kv1 mypas.hoc")
+
+
+access bouton[axNum/2]
+
+objref el
+el = new IClamp(.5)
+{
+	el.del = 1095
+	el.dur = 200
+	el.amp = -0.01
+	
+}
+
+//pre-run for equilibration
+dt = 5  // [ms] integration time step
+tstopEquil = 1000  // [ms]
+finitialize(-80) 
+t=0
+while (t < tstopEquil) {
+	fadvance()  // advance solution by dt
+	}
+
+
+//main-run
+dt = 0.2  // [ms] integration time step
+tstop = 500  // [ms]
+N=tstop/dt+1
+objref vect,vectTime
+vect = new Vector(N)
+vectTime = new Vector(N)
+i=0
+while (t < tstopEquil+tstop) {
+	//print "t=",t,"  I=", el.i,"pA"
+	vect.x(i)=v(0.5)
+	vectTime.x(i)=t-tstopEquil
+	fadvance()  // advance solution by dt
+	i+=1
+	}
+
+objref f
+f=new File()
+f.wopen("tmp.txt")
+for i=0,(N-1){
+	f.printf("%f	%f\n",vectTime.x(i),vect.x(i))
+}
+f.close()
